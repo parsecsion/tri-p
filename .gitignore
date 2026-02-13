@@ -1,0 +1,13 @@
+# Data files
+*.osm
+*.pbf
+*_dump.sql
+*.bak
+
+# Logs
+*.log
+import_log.txt
+
+# OS generated files
+thumbs.db
+desktop.ini
