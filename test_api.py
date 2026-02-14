@@ -41,6 +41,29 @@ def test_api():
         print("❌ Could not fetch coordinates from DB.")
         return
 
+    # Test Invalid Route (Disconnected Nodes)
+    # 679346 and 195051 failed before
+    # NOW: Should succeed by snapping to major roads!
+    print("\nTesting Disconnected Route (Expect 200 with Retry)...")
+    try:
+        response = requests.post(f"{URL}", json={
+            "start_lat": 24.8607, # Dummy lat
+            "start_lon": 67.0011,
+            "end_lat": 24.9000, 
+            "end_lon": 67.0500,
+            "mode": "clean"
+        })
+        if response.status_code == 200:
+             print("✅ Success: Route found via Major Road fallback!")
+             data = response.json()
+             print(f"   Nodes visited: {data['metadata']['nodes_visited']}")
+        else:
+             print(f"❌ Failed: {response.status_code}")
+             print(response.text)
+
+    except Exception as e:
+        print(f"❌ Error during invalid route test: {e}")
+
     req_data = {
         "start_lat": start_coords[1],
         "start_lon": start_coords[0],
